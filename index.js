@@ -4,11 +4,11 @@ const app = express();
 const bodyparser = require("body-parser");
 const cors = require("cors");
 const db = require("./db");
-const userController = require("./controllers/user-controller");
+const loginController = require("./controllers/login-controller");
 
 app.use(cors());
 app.use(bodyparser.json());
-app.use("/", userController);
+app.use("/", loginController);
 
 app.listen(3000, async () => {
   await db.migrate(process.env.DB_NAME);
