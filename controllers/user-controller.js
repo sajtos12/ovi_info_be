@@ -6,8 +6,9 @@ router.get("/user", async (req, res) => {
   try {
     const userName = req.query.userName;
     const user = await userService.getUserByUsername({ userName });
+    console.log(user);
     res
-      .json(user)
+      .json(user[0])
       .status(200)
       .end();
   } catch (error) {

@@ -25,7 +25,7 @@ const connect = async databasename => {
 };
 
 const query = async (query, params) => {
-  let result;
+  //let result;
   const client = new Client({
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
@@ -35,16 +35,15 @@ const query = async (query, params) => {
   });
   client.connect();
 
-  await client
-    .query(query, params)
-    .then(res => {
+  const result = await client.query(query, params);
+  /* .then(res => {
       result = res.rows;
       console.log(res);
     })
     .catch(err => {
       console.log(err.message);
-    });
-  return result;
+    }); */
+  return result.rows;
 };
 
 const migrate = async databasename => {
