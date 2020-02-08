@@ -2,9 +2,7 @@ const db = require("../db");
 const util = require("../common/util");
 
 const login = async message => {
-  const {
-    data: { userName, password }
-  } = message;
+  const { userName, password } = message;
 
   const user = await getUserByUsername({ userName });
   if (user[0] === undefined) {
@@ -30,4 +28,4 @@ const getUserByUsername = async message => {
   return selectedUser;
 };
 
-module.exports = { getUserByUsername };
+module.exports = { getUserByUsername, login };

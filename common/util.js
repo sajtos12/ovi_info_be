@@ -20,3 +20,30 @@ const validatePassword = (user, password) => {
       });
   });
 };
+
+const generateToken = user => {
+  const tokenProperties = {
+    userId: user.id,
+    name: user.name,
+    username: user.username
+  };
+
+  const options = {
+    algorithm: "HS512",
+    expiresIn: TOKEN_LIFETIME
+  };
+
+  return new Promise((resolve, reject) => {
+    jwt.sign(tokenProperties, JWT_SECRET_KEY, options, (err, token) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(token);
+    });
+  });
+};
+
+module.exports = {
+  validatePassword,
+  generateToken
+};
