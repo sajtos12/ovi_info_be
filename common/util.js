@@ -1,3 +1,4 @@
+"use strict";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -17,6 +18,19 @@ const validatePassword = (user, password) => {
       })
       .then(err => {
         return reject(err);
+      });
+  });
+};
+
+const hashPassword = plainPass => {
+  return new Promise((resolve, reject) => {
+    bcrypt
+      .hash(plainPass, SALT_ROUNDS)
+      .then(res => {
+        return resolve(res);
+      })
+      .catch(err => {
+        return reject(new Error("Hiba jelszó hash készítés során"));
       });
   });
 };
@@ -43,7 +57,21 @@ const generateToken = user => {
   });
 };
 
+const validateToken = rawToken => {
+  const token = rawToken.split(" ")[1];
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, JWT_SECRET_KEY, (err, decoded) => {
+      if (err) {
+        return reject(new Error("A token nem megfelelő"));
+      }
+      return resolve(decoded);
+    });
+  });
+};
+
 module.exports = {
   validatePassword,
-  generateToken
+  generateToken,
+  validateToken,
+  hashPassword
 };
