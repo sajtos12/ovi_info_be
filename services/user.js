@@ -29,4 +29,20 @@ const getUserByUsername = async message => {
   return selectedUser;
 };
 
-module.exports = { getUserByUsername, login };
+const createUser = async user => {
+  const foundUser = await getUserByUsername({ userName: user.userName });
+  if (foundUser[0] !== undefined) {
+    throw new Error("Ez a felhasználónév már létezik!");
+  }
+
+  const password = await util.hashPassword(user.password);
+
+  const inserted = await db.query(
+    'INSERT INTO public."User"(username, password, name) VALUES($1, $2, $3) RETURNING *',
+    [user.userName, password, user.name]
+  );
+
+  return inserted[0].id;
+};
+
+module.exports = { getUserByUsername, login, createUser };
