@@ -8,7 +8,7 @@ const login = async (message) => {
 
   const user = await getUserByUsername(userName);
   if (user[0] === undefined) {
-    throw new Error("Nincs ilyen user");
+    throw new Error("Nincs ilyen felhasználó");
   }
 
   const isValidPass = await util.validatePassword(user[0], password);
